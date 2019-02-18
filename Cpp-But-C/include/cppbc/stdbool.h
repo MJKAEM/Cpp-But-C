@@ -21,15 +21,12 @@
 #ifndef CPPBC_STDBOOL_H_
 #define CPPBC_STDBOOL_H_
 
-
-#if /* Using C99 or above. */ \
-    defined(__STDC_VERSION__) \
-    && (__STDC_VERSION__ >= 199901L)
-
-#include <stdbool.h>
-
-#elif /* Using C89. */ \
-    !defined(__cplusplus)
+/*
+ * The bool type is required by the public API and the internal implementation
+ * in order to function correctly.  In order to get around potential naming
+ * conflicts, cppbc__ is prefixed to the names, but may be aliased without the
+ * prefix if desired.  Define CPPBC_ENABLE_BOOL_ALIAS to enable these aliases.
+ */
 
 /*
  * Enum was not chosen because its size is uncontrollable, and it is not
@@ -40,19 +37,26 @@
  *
  * Contributor note: Treat bool as a special type that cannot have template
  * specializations.  Many problems could be solved without needing to treat
- * bool as a special type (e.g. set instead of map with bool value)
+ * bool as a special type (e.g. set instead of map with bool value).
  */
 
-typedef unsigned char bool;
+typedef unsigned char cppbc__bool;
 
-#define false 0
-#define true 1
+#define cppbc__false 0
+#define cppbc__true 1
+
+#if defined(CPPBC_ENABLE_BOOL_ALIAS)
+
+#if /* Using C and not C++. */ \
+    !defined(__cplusplus)
+
+typedef cppbc__bool bool;
+
+#define false cppbc__false
+#define true cppbc__true
 
 #endif
 
-/*
- * If none of the cases matched, then the language is C++, which makes bool a
- * keyword.  stdbool.h is deprecated in C++.  cstdbool is removed in C++20.
- */
+#endif /* defined(CPPBC_ENABLE_BOOL_ALIAS) */
 
 #endif /* CPPBC_STDBOOL_H_ */
