@@ -21,4 +21,14 @@
 #ifndef CPPBC_KEYWORDS_H_
 #define CPPBC_KEYWORDS_H_
 
+/*
+ * Upcasts or downcasts a pointer.  This is the guaranteed safe way to upcast
+ * and downcast, as any changes to the inheritance implementation will be
+ * properly reflected.
+ */
+#ifndef DYNAMIC_CAST
+#define DYNAMIC_CAST(target_type, expression) \
+    ((target_type) expression)
+#endif /* DYNAMIC_CAST */
+
 #endif /* CPPBC_KEYWORDS_H_ */
