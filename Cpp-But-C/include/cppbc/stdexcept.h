@@ -21,4 +21,59 @@
 #ifndef CPPBC_STDEXCEPT_H_
 #define CPPBC_STDEXCEPT_H_
 
+/**
+ * Forward declarations
+ */
+
+struct cppbc__exception;
+struct cppbc__exception_vtable;
+
+/**
+ * cppbc__exception
+ */
+
+struct cppbc__exception {
+  const struct cppbc__exception_vtable *__vtable;
+};
+
+struct cppbc__exception_vtable {
+  void* type_info; /* TODO (Martino Kuan): Reserved for future implementation. */
+  void (*delete_)(
+      struct cppbc__exception*
+  );
+  const char* (*what)(
+      const struct cppbc__exception*
+  );
+};
+
+/**
+ * cppbc__exception functions
+ */
+
+const struct cppbc__exception_vtable*
+cppbc__exception__get_exception_vtable(void);
+
+struct cppbc__exception*
+cppbc__exception__construct_default(
+    struct cppbc__exception *this_
+);
+
+struct cppbc__exception*
+cppbc__exception__construct_copy(
+    struct cppbc__exception *this_,
+    const struct cppbc__exception *src
+);
+
+void cppbc__exception__destruct(
+    struct cppbc__exception *this_
+);
+
+void cppbc__exception__delete(
+    struct cppbc__exception *this_
+);
+
+const char* cppbc__exception__what(
+    const struct cppbc__exception* this_
+);
+
 #endif // CPPBC_STDEXCEPT_H_
