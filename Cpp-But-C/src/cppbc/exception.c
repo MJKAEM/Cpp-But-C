@@ -54,7 +54,7 @@ static void cppbc__exception__impl__delete(
 static void cppbc__exception__impl__delete_c_array(
     struct cppbc__exception *c_array
 ) {
-  int i;
+  size_t i;
   size_t element_count;
 
   /* Call the destructor on all elements in the array. */
@@ -118,7 +118,7 @@ struct cppbc__exception*
 cppbc__exception__new_c_array(
     size_t element_count
 ) {
-  int i;
+  size_t i;
   struct cppbc__exception *c_array;
 
   c_array = cppbc__allocate_c_array(element_count, sizeof(*c_array));
