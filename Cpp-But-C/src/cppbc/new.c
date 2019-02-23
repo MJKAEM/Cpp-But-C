@@ -20,6 +20,8 @@
 
 #include "../../include/cppbc/new.h"
 
+#include <stdlib.h>
+
 void* cppbc__allocate(size_t size) {
   return malloc(size);
 }
@@ -59,6 +61,7 @@ size_t cppbc__get_c_array_element_count(void *c_array) {
 
   /* Retrieve the element count. */
   metadata = &((struct cppbc__c_array_metadata*) c_array)[-1];
+  element_count = metadata->element_count;
 
   return element_count;
 }
