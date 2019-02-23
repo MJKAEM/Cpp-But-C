@@ -59,13 +59,13 @@ static const char* cppbc__exception__impl__what(
 const struct cppbc__exception_vtable*
 cppbc__exception__get_exception_vtable(void) {
   static struct cppbc__exception_vtable exception_vtable;
-  static cppbc__bool is_init = cppbc__false;
+  static cppbc__bool is_init = CPPBC_FALSE;
 
   if (!is_init) {
     exception_vtable.delete_ = &cppbc__exception__impl__delete;
     exception_vtable.what = &cppbc__exception__impl__what;
 
-    is_init = cppbc__true;
+    is_init = CPPBC_TRUE;
   }
 
   return &exception_vtable;

@@ -42,8 +42,8 @@
 
 typedef unsigned char cppbc__bool;
 
-#define cppbc__false 0
-#define cppbc__true 1
+#define CPPBC_FALSE 0
+#define CPPBC_TRUE 1
 
 #if defined(CPPBC_ENABLE_BOOL_ALIAS)
 
@@ -52,8 +52,8 @@ typedef unsigned char cppbc__bool;
 
 typedef cppbc__bool bool;
 
-#define false cppbc__false
-#define true cppbc__true
+#define false CPPBC_FALSE
+#define true CPPBC_TRUE
 
 #endif
 
