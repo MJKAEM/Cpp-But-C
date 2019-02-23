@@ -63,7 +63,7 @@ struct cppbc__bad_alloc {
   union {
     struct cppbc__bad_alloc_vtable *__bad_alloc_vtable;
     struct cppbc__exception_vtable *__exception_vtable;
-  };
+  } first;
 };
 
 struct cppbc__bad_alloc_vtable {

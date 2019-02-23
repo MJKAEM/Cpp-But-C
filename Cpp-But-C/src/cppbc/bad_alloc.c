@@ -102,7 +102,7 @@ cppbc__bad_alloc__construct_default(
 ) {
   struct cppbc__exception *exception;
 
-  exception = (struct cppbc__exception*) &this_->__exception_vtable;
+  exception = (struct cppbc__exception*) &this_->first.__exception_vtable;
   cppbc__exception__construct_default(exception);
 
   exception->__vtable =
@@ -142,8 +142,10 @@ cppbc__bad_alloc__construct_copy(
 ) {
   struct cppbc__exception *this_as_exception;
   struct cppbc__exception *src_as_exception;
-  this_as_exception = (struct cppbc__exception*) &this_->__exception_vtable;
-  src_as_exception = (struct cppbc__exception*) &src->__exception_vtable;
+  this_as_exception = (struct cppbc__exception*)
+      &this_->first.__exception_vtable;
+  src_as_exception = (struct cppbc__exception*)
+      &src->first.__exception_vtable;
   cppbc__exception__construct_copy(this_as_exception, src_as_exception);
 
   this_as_exception->__vtable =
@@ -168,7 +170,8 @@ void cppbc__bad_alloc__destruct(
   /* Nothing to destruct! */
 
   struct cppbc__exception *exception;
-  exception = (struct cppbc__exception*) &this_->__exception_vtable;
+  exception = (struct cppbc__exception*)
+      &this_->first.__exception_vtable;
   cppbc__exception__destruct(exception);
 }
 
@@ -176,7 +179,7 @@ void cppbc__bad_alloc__delete(
     struct cppbc__bad_alloc *this_
 ) {
   if (this_ != NULL) {
-    this_->__bad_alloc_vtable->delete_(this_);
+    this_->first.__bad_alloc_vtable->delete_(this_);
   }
 }
 
@@ -184,7 +187,7 @@ void cppbc__bad_alloc__delete_c_array(
     struct cppbc__bad_alloc *c_array
 ) {
   if (c_array != NULL) {
-    c_array->__bad_alloc_vtable->delete_c_array(c_array);
+    c_array->first.__bad_alloc_vtable->delete_c_array(c_array);
   }
 }
 
@@ -199,11 +202,11 @@ struct cppbc__exception*
 cppbc__bad_alloc__upcast_to__cppbc__exception(
     struct cppbc__bad_alloc *this_
 ) {
-  return (struct cppbc__exception*) &this_->__exception_vtable;
+  return (struct cppbc__exception*) &this_->first.__exception_vtable;
 }
 
 const char* cppbc__bad_alloc__what(
     const struct cppbc__bad_alloc* this_
 ) {
-  return this_->__bad_alloc_vtable->what(this_);
+  return this_->first.__bad_alloc_vtable->what(this_);
 }

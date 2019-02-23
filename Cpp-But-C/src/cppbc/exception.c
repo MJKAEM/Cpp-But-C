@@ -37,7 +37,7 @@ static void cppbc__exception__impl__delete_c_array(
 );
 
 static const char* cppbc__exception__impl__what(
-    struct cppbc__exception *this_
+    const struct cppbc__exception *this_
 );
 
 /**
@@ -58,7 +58,7 @@ static void cppbc__exception__impl__delete_c_array(
   size_t element_count;
 
   /* Call the destructor on all elements in the array. */
-  element_count = cppbc__get_c_array_count((void*) c_array);
+  element_count = cppbc__get_c_array_element_count((void*) c_array);
 
   for (i = 0; i < element_count; i += 1) {
     struct cppbc__exception* element_ptr =
@@ -70,7 +70,7 @@ static void cppbc__exception__impl__delete_c_array(
 }
 
 static const char* cppbc__exception__impl__what(
-    struct cppbc__exception *this_
+    const struct cppbc__exception *this_
 ) {
   return "cppbc__exception";
 }
@@ -99,14 +99,16 @@ struct cppbc__exception*
 cppbc__exception__construct_default(
     struct cppbc__exception *this_
 ) {
-  this_->__vtable = &cppbc__exception__get_exception_vtable;
+  this_->__vtable = cppbc__exception__get_exception_vtable();
+
+  return this_;
 }
 
 struct cppbc__exception*
 cppbc__exception__new_default(
     void
 ) {
-  struct cppbc__exception* this_ = cppbc__new(sizeof(*this_));
+  struct cppbc__exception* this_ = cppbc__allocate(sizeof(*this_));
   cppbc__exception__construct_default(this_);
 
   return this_;
@@ -133,15 +135,17 @@ cppbc__exception__construct_copy(
     struct cppbc__exception *this_,
     const struct cppbc__exception *src
 ) {
-  this_->__vtable = &cppbc__exception__get_exception_vtable;
+  this_->__vtable = cppbc__exception__get_exception_vtable();
+
+  return this_;
 }
 
 struct cppbc__exception*
 cppbc__exception__new_copy(
     const struct cppbc__exception *src
 ) {
-  struct cppbc__exception* this_ = cppbc__new(sizeof(*this_));
-  cppbc__exception__construct_default(this_, src);
+  struct cppbc__exception* this_ = cppbc__allocate(sizeof(*this_));
+  cppbc__exception__construct_copy(this_, src);
 
   return this_;
 }

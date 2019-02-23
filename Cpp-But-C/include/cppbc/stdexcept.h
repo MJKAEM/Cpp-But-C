@@ -103,4 +103,4 @@ const char* cppbc__exception__what(
     const struct cppbc__exception* this_
 );
 
-#endif // CPPBC_STDEXCEPT_H_
+#endif /* CPPBC_STDEXCEPT_H_ */
