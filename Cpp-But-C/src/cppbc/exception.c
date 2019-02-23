@@ -21,6 +21,7 @@
 #include "../../include/cppbc/stdexcept.h"
 
 #include <stdlib.h>
+#include "../../include/cppbc/new.h"
 #include "../../include/cppbc/stdbool.h"
 
 /**
@@ -29,6 +30,10 @@
 
 static void cppbc__exception__impl__delete(
     struct cppbc__exception *this_
+);
+
+static void cppbc__exception__impl__delete_c_array(
+    struct cppbc__exception *c_array
 );
 
 static const char* cppbc__exception__impl__what(
@@ -43,7 +48,25 @@ static void cppbc__exception__impl__delete(
     struct cppbc__exception *this_
 ) {
   cppbc__exception__destruct(this_);
-  free(this_);
+  cppbc__deallocate(this_);
+}
+
+static void cppbc__exception__impl__delete_c_array(
+    struct cppbc__exception *c_array
+) {
+  int i;
+  size_t element_count;
+
+  /* Call the destructor on all elements in the array. */
+  element_count = cppbc__get_c_array_count((void*) c_array);
+
+  for (i = 0; i < element_count; i += 1) {
+    struct cppbc__exception* element_ptr =
+        &((struct cppbc__exception*) c_array)[i];
+    cppbc__exception__destruct(element_ptr);
+  }
+
+  cppbc__deallocate_c_array((void*) c_array);
 }
 
 static const char* cppbc__exception__impl__what(
@@ -63,6 +86,7 @@ cppbc__exception__get_exception_vtable(void) {
 
   if (!is_init) {
     exception_vtable.delete_ = &cppbc__exception__impl__delete;
+    exception_vtable.delete_c_array = &cppbc__exception__impl__delete_c_array;
     exception_vtable.what = &cppbc__exception__impl__what;
 
     is_init = CPPBC_TRUE;
@@ -79,11 +103,31 @@ cppbc__exception__construct_default(
 }
 
 struct cppbc__exception*
+cppbc__exception__new_default(
+    void
+) {
+  struct cppbc__exception* this_ = cppbc__new(sizeof(*this_));
+  cppbc__exception__construct_default(this_);
+
+  return this_;
+}
+
+struct cppbc__exception*
 cppbc__exception__construct_copy(
     struct cppbc__exception *this_,
     const struct cppbc__exception *src
 ) {
   this_->__vtable = &cppbc__exception__get_exception_vtable;
+}
+
+struct cppbc__exception*
+cppbc__exception__new_copy(
+    const struct cppbc__exception *src
+) {
+  struct cppbc__exception* this_ = cppbc__new(sizeof(*this_));
+  cppbc__exception__construct_default(this_, src);
+
+  return this_;
 }
 
 void cppbc__exception__destruct(
@@ -97,6 +141,14 @@ void cppbc__exception__delete(
 ) {
   if (this_ != NULL) {
     this_->__vtable->delete_(this_);
+  }
+}
+
+void cppbc__exception__delete_c_array(
+    struct cppbc__exception *c_array
+) {
+  if (c_array != NULL) {
+    c_array->__vtable->delete_c_array(c_array);
   }
 }
 
