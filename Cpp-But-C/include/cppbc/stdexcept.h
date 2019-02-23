@@ -21,6 +21,8 @@
 #ifndef CPPBC_STDEXCEPT_H_
 #define CPPBC_STDEXCEPT_H_
 
+#include <stddef.h>
+
 /**
  * Forward declarations
  */
@@ -67,6 +69,11 @@ cppbc__exception__construct_default(
 struct cppbc__exception*
 cppbc__exception__new_default(
     void
+);
+
+struct cppbc__exception*
+cppbc__exception__new_c_array(
+    size_t element_count
 );
 
 struct cppbc__exception*

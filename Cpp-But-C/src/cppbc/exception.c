@@ -113,6 +113,22 @@ cppbc__exception__new_default(
 }
 
 struct cppbc__exception*
+cppbc__exception__new_c_array(
+    size_t element_count
+) {
+  int i;
+  struct cppbc__exception *c_array;
+
+  c_array = cppbc__allocate_c_array(element_count, sizeof(*c_array));
+
+  for (i = 0; i < element_count; i += 1) {
+    cppbc__exception__construct_default(&c_array[i]);
+  }
+
+  return c_array;
+}
+
+struct cppbc__exception*
 cppbc__exception__construct_copy(
     struct cppbc__exception *this_,
     const struct cppbc__exception *src
