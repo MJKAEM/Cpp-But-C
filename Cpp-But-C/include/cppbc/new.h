@@ -60,11 +60,79 @@ size_t cppbc__get_c_array_element_count(void *c_array);
  */
 
 struct cppbc__bad_alloc {
-  struct cppbc__bad_alloc_vtable *__vtable;
+  union {
+    struct cppbc__bad_alloc_vtable *__bad_alloc_vtable;
+    struct cppbc__exception_vtable *__exception_vtable;
+  };
 };
 
 struct cppbc__bad_alloc_vtable {
-  struct cppbc__exception_vtable exception_vtable;
+  void* type_info; /* TODO (Martino Kuan): Reserved for future implementation. */
+
+  void (*delete_)(
+      struct cppbc__bad_alloc*
+  );
+
+  void (*delete_c_array)(
+      struct cppbc__bad_alloc*
+  );
+
+  const char* (*what)(
+      const struct cppbc__bad_alloc*
+  );
 };
+
+const struct cppbc__exception_vtable*
+cppbc__bad_alloc__get_exception_vtable(void);
+
+struct cppbc__bad_alloc*
+cppbc__bad_alloc__construct_default(
+    struct cppbc__bad_alloc *this_
+);
+
+struct cppbc__bad_alloc*
+cppbc__bad_alloc__new_default(void);
+
+struct cppbc__bad_alloc*
+cppbc__bad_alloc__new_c_array(
+    size_t element_count
+);
+
+struct cppbc__bad_alloc*
+cppbc__bad_alloc__construct_copy(
+    struct cppbc__bad_alloc *this_,
+    const struct cppbc__bad_alloc *src
+);
+
+struct cppbc__bad_alloc*
+cppbc__bad_alloc__new_copy(
+    const struct cppbc__bad_alloc *src
+);
+
+void cppbc__bad_alloc__destruct(
+    struct cppbc__bad_alloc *this_
+);
+
+void cppbc__bad_alloc__delete(
+    struct cppbc__bad_alloc *this_
+);
+
+void cppbc__bad_alloc__delete_c_array(
+    struct cppbc__bad_alloc *c_array
+);
+
+struct cppbc__bad_alloc*
+cppbc__exception__downcast_to__cppbc__bad_alloc(
+    struct cppbc__exception *this_
+);
+
+struct cppbc__exception*
+cppbc__bad_alloc__upcast_to__cppbc__exception(
+    struct cppbc__bad_alloc *this_
+);
+
+const char* cppbc__bad_alloc__what(
+    const struct cppbc__bad_alloc *this_
+);
 
 #endif /* CPPBC_NEW_H_ */
