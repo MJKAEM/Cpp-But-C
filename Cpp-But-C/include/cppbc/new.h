@@ -22,10 +22,14 @@
 #define CPPBC_NEW_H_
 
 #include <stddef.h>
+#include "stdexcept.h"
 
 /**
  * Forward declarations
  */
+
+struct cppbc__bad_alloc;
+struct cppbc__bad_alloc_vtable;
 
 struct cppbc__c_array_metadata;
 
@@ -51,5 +55,16 @@ void cppbc__deallocate_c_array(void *c_array);
 
 size_t cppbc__get_c_array_element_count(void *c_array);
 
+/**
+ * cppbc__bad_alloc
+ */
+
+struct cppbc__bad_alloc {
+  struct cppbc__bad_alloc_vtable *__vtable;
+};
+
+struct cppbc__bad_alloc_vtable {
+  struct cppbc__exception_vtable exception_vtable;
+};
 
 #endif /* CPPBC_NEW_H_ */
