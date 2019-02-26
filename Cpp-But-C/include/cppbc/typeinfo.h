@@ -21,4 +21,63 @@
 #ifndef CPPBC_TYPEINFO_H_
 #define CPPBC_TYPEINFO_H_
 
+#include <stddef.h>
+
+#include "stdbool.h"
+
+/**
+ * Forward declarations
+ */
+
+struct cppbc__type_info;
+struct cppbc__type_info_vtable;
+
+/**
+ * cppbc__type_info
+ */
+
+struct cppbc__type_info {
+  struct cppbc__type_info_vtable *vtable;
+  const char* name;
+};
+
+struct cppbc__type_info_vtable {
+  struct cppbc__type_info *type_info;
+
+  void (*delete_)(struct cppbc__type_info*);
+  void (*delete_c_array)(struct cppbc__type_info*);
+};
+
+const struct cppbc__type_info_vtable*
+cppbc__type_info__get_type_info_vtable(void);
+
+void cppbc__type_info__destruct(
+    struct cppbc__type_info *this_
+);
+
+void cppbc__type_info__delete(
+    struct cppbc__type_info *this_
+);
+
+void cppbc__type_info__delete_c_array(
+    struct cppbc__type_info *c_array
+);
+
+cppbc__bool cppbc__type_info__before(
+    const struct cppbc__type_info *this_
+);
+
+cppbc__bool cppbc__type_info__equals(
+    const struct cppbc__type_info *lhs,
+    const struct cppbc__type_info *rhs
+);
+
+size_t cppbc__type_info__hash_code(
+    const struct cppbc__type_info *this_
+);
+
+const char* cppbc__type_info__name(
+    const struct cppbc__type_info *this_
+);
+
 #endif /* CPPBC_TYPEINFO_H_ */
