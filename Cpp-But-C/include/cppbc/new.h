@@ -45,13 +45,13 @@ struct cppbc__c_array_metadata {
  * Functions
  */
 
-void* cppbc__allocate(size_t size);
+void* cppbc__new(size_t size);
 
-void* cppbc__allocate_c_array(size_t element_count, size_t element_size);
+void* cppbc__new_c_array(size_t element_count, size_t element_size);
 
-void cppbc__deallocate(void *ptr);
+void cppbc__delete(void *ptr);
 
-void cppbc__deallocate_c_array(void *c_array);
+void cppbc__delete_c_array(void *c_array);
 
 size_t cppbc__get_c_array_element_count(void *c_array);
 

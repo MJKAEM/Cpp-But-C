@@ -22,11 +22,11 @@
 
 #include <stdlib.h>
 
-void* cppbc__allocate(size_t size) {
+void* cppbc__new(size_t size) {
   return malloc(size);
 }
 
-void* cppbc__allocate_c_array(size_t element_count, size_t element_size) {
+void* cppbc__new_c_array(size_t element_count, size_t element_size) {
   size_t total_size;
   struct cppbc__c_array_metadata *metadata;
 
@@ -43,11 +43,11 @@ void* cppbc__allocate_c_array(size_t element_count, size_t element_size) {
   return &metadata[1];
 }
 
-void cppbc__deallocate(void *ptr) {
+void cppbc__delete(void *ptr) {
   free(ptr);
 }
 
-void cppbc__deallocate_c_array(void* c_array) {
+void cppbc__delete_c_array(void* c_array) {
   struct cppbc__c_array_metadata *metadata;
 
   /* The allocated memory chunk begins at metadata. */

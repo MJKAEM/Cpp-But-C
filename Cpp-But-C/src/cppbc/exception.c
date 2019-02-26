@@ -48,7 +48,7 @@ static void cppbc__exception__impl__delete(
     struct cppbc__exception *this_
 ) {
   cppbc__exception__destruct(this_);
-  cppbc__deallocate(this_);
+  cppbc__delete(this_);
 }
 
 static void cppbc__exception__impl__delete_c_array(
@@ -66,7 +66,7 @@ static void cppbc__exception__impl__delete_c_array(
     cppbc__exception__destruct(element_ptr);
   }
 
-  cppbc__deallocate_c_array((void*) c_array);
+  cppbc__delete_c_array((void*) c_array);
 }
 
 static const char* cppbc__exception__impl__what(
@@ -108,7 +108,7 @@ struct cppbc__exception*
 cppbc__exception__new_default(
     void
 ) {
-  struct cppbc__exception* this_ = cppbc__allocate(sizeof(*this_));
+  struct cppbc__exception* this_ = cppbc__new(sizeof(*this_));
   cppbc__exception__construct_default(this_);
 
   return this_;
@@ -121,7 +121,7 @@ cppbc__exception__new_c_array(
   size_t i;
   struct cppbc__exception *c_array;
 
-  c_array = cppbc__allocate_c_array(element_count, sizeof(*c_array));
+  c_array = cppbc__new_c_array(element_count, sizeof(*c_array));
 
   for (i = 0; i < element_count; i += 1) {
     cppbc__exception__construct_default(&c_array[i]);
@@ -144,7 +144,7 @@ struct cppbc__exception*
 cppbc__exception__new_copy(
     const struct cppbc__exception *src
 ) {
-  struct cppbc__exception* this_ = cppbc__allocate(sizeof(*this_));
+  struct cppbc__exception* this_ = cppbc__new(sizeof(*this_));
   cppbc__exception__construct_copy(this_, src);
 
   return this_;

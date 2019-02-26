@@ -49,7 +49,7 @@ static void cppbc__bad_alloc__impl__delete(
     struct cppbc__bad_alloc *this_
 ) {
   cppbc__bad_alloc__destruct(this_);
-  cppbc__deallocate(this_);
+  cppbc__delete(this_);
 }
 
 static void cppbc__bad_alloc__impl__delete_c_array(
@@ -64,7 +64,7 @@ static void cppbc__bad_alloc__impl__delete_c_array(
     cppbc__bad_alloc__destruct(&c_array[i]);
   }
 
-  cppbc__deallocate_c_array((void*) c_array);
+  cppbc__delete_c_array((void*) c_array);
 }
 
 static const char* cppbc__bad_alloc__impl__what(
@@ -113,7 +113,7 @@ cppbc__bad_alloc__construct_default(
 
 struct cppbc__bad_alloc*
 cppbc__bad_alloc__new_default(void) {
-  struct cppbc__bad_alloc *this_ = cppbc__allocate(sizeof(*this_));
+  struct cppbc__bad_alloc *this_ = cppbc__new(sizeof(*this_));
   cppbc__bad_alloc__construct_default(this_);
 
   return this_;
@@ -126,7 +126,7 @@ cppbc__bad_alloc__new_c_array(
   size_t i;
   struct cppbc__bad_alloc *c_array;
 
-  c_array = cppbc__allocate_c_array(element_count, sizeof(*c_array));
+  c_array = cppbc__new_c_array(element_count, sizeof(*c_array));
 
   for (i = 0; i < element_count; i += 1) {
     cppbc__bad_alloc__construct_default(&c_array[i]);
@@ -158,7 +158,7 @@ struct cppbc__bad_alloc*
 cppbc__bad_alloc__new_copy(
     const struct cppbc__bad_alloc *src
 ) {
-  struct cppbc__bad_alloc *this_ = cppbc__allocate(sizeof(*this_));
+  struct cppbc__bad_alloc *this_ = cppbc__new(sizeof(*this_));
   cppbc__bad_alloc__construct_copy(this_, src);
 
   return this_;
