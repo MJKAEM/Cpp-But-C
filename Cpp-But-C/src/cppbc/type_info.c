@@ -70,6 +70,20 @@ static void cppbc__type_info__impl__delete_c_array(
  * Public API
  */
 
+const struct cppbc__type_info*
+cppbc__type_info__get_type_info_vtable_type_info(void) {
+  static struct cppbc__type_info type_info;
+  static cppbc__bool is_init = CPPBC_FALSE;
+
+  if (!is_init) {
+    type_info.name = "cppbc__type_info";
+
+    is_init = CPPBC_TRUE;
+  }
+
+  return &type_info;
+}
+
 const struct cppbc__type_info_vtable*
 cppbc__type_info__get_type_info_vtable(void) {
   static struct cppbc__type_info_vtable vtable;

@@ -48,6 +48,9 @@ struct cppbc__type_info_vtable {
   void (*delete_c_array)(struct cppbc__type_info*);
 };
 
+const struct cppbc__type_info*
+cppbc__type_info__get_type_info_vtable_type_info(void);
+
 const struct cppbc__type_info_vtable*
 cppbc__type_info__get_type_info_vtable(void);
 
