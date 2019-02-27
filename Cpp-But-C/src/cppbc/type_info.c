@@ -20,6 +20,8 @@
 
 #include "../../include/cppbc/typeinfo.h"
 
+#include <string.h>
+
 #include "../../include/cppbc/new.h"
 #include "../../include/cppbc/stdbool.h"
 
@@ -107,7 +109,17 @@ cppbc__bool cppbc__type_info__before(
 cppbc__bool cppbc__type_info__equals(
     const struct cppbc__type_info *lhs,
     const struct cppbc__type_info *rhs
-);
+) {
+  int difference;
+
+  difference = memcmp(
+      (const void*) lhs,
+      (const void*) rhs,
+      sizeof(*lhs)
+  );
+
+  return (difference == 0);
+}
 
 size_t cppbc__type_info__hash_code(
     const struct cppbc__type_info *this_
