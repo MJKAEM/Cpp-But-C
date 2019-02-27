@@ -42,7 +42,7 @@ struct cppbc__type_info {
 };
 
 struct cppbc__type_info_vtable {
-  struct cppbc__type_info *type_info;
+  const struct cppbc__type_info *type_info;
 
   void (*delete_)(struct cppbc__type_info*);
   void (*delete_c_array)(struct cppbc__type_info*);
