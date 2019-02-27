@@ -143,7 +143,24 @@ cppbc__bool cppbc__type_info__equals(
 
 size_t cppbc__type_info__hash_code(
     const struct cppbc__type_info *this_
-);
+) {
+  const size_t name_length = strlen(this_->name);
+  const char *type_name = cppbc__type_info__name(this_);
+
+  int i;
+  size_t hash_code;
+
+  /* Use the name of the type and its address to generate the hash code. */
+  hash_code = 0;
+
+  for (i = 0; i < name_length; i += 1) {
+    hash_code += type_name[i];
+  }
+
+  hash_code += (size_t) type_name;
+
+  return hash_code;
+}
 
 const char* cppbc__type_info__name(
     const struct cppbc__type_info *this_
