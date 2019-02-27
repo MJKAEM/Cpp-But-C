@@ -76,6 +76,7 @@ cppbc__type_info__get_type_info_vtable_type_info(void) {
   static cppbc__bool is_init = CPPBC_FALSE;
 
   if (!is_init) {
+    type_info.vtable = cppbc__type_info__get_type_info_vtable();
     type_info.name = "cppbc__type_info";
 
     is_init = CPPBC_TRUE;
@@ -90,10 +91,15 @@ cppbc__type_info__get_type_info_vtable(void) {
   static cppbc__bool is_init = CPPBC_FALSE;
 
   if (!is_init) {
+    /*
+     * Special vtable case to prevent infinite loop when getting the type_info
+     * of type_info.
+     */
+    is_init = CPPBC_TRUE;
+
+    vtable.type_info = cppbc__type_info__get_type_info_vtable_type_info();
     vtable.delete_ = &cppbc__type_info__impl__delete;
     vtable.delete_c_array = &cppbc__type_info__impl__delete_c_array;
-
-    is_init = CPPBC_TRUE;
   }
 
   return &vtable;
