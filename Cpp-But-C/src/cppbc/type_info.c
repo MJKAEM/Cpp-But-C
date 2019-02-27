@@ -73,7 +73,7 @@ static void cppbc__type_info__impl__delete_c_array(
 const struct cppbc__type_info_vtable*
 cppbc__type_info__get_type_info_vtable(void) {
   static struct cppbc__type_info_vtable vtable;
-  cppbc__bool is_init = CPPBC_FALSE;
+  static cppbc__bool is_init = CPPBC_FALSE;
 
   if (!is_init) {
     vtable.delete_ = &cppbc__type_info__impl__delete;
