@@ -37,7 +37,7 @@ struct cppbc__type_info_vtable;
  */
 
 struct cppbc__type_info {
-  struct cppbc__type_info_vtable *vtable;
+  const struct cppbc__type_info_vtable *vtable;
   const char* name;
 };
 
