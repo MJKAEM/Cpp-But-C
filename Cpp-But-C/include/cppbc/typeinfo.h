@@ -29,8 +29,61 @@
  * Forward declarations
  */
 
+struct cppbc__bad_cast;
+struct cppbc__bad_cast_vtable;
+
 struct cppbc__type_info;
 struct cppbc__type_info_vtable;
+
+/**
+ * cppbc__bad_cast
+ */
+
+struct cppbc__bad_cast {
+  const struct cppbc__bad_cast_vtable *vtable;
+};
+
+struct cppbc__bad_cast_vtable {
+  const struct cppbc__type_info *type_info;
+
+  void (*delete_)(struct cppbc__bad_cast*);
+  void (*delete_c_array)(struct cppbc__bad_cast*);
+  const char* (*what)(const struct cppbc__bad_cast*);
+};
+
+/**
+ * cppbc__bad_cast functions
+ */
+
+const struct cppbc__bad_cast_vtable*
+cppbc__bad_cast__get_bad_cast_vtable(void);
+
+const struct cppbc__type_info*
+cppbc__bad_cast__get_bad_cast_vtable_type_info(void);
+
+struct cppbc__bad_cast*
+cppbc__bad_cast__construct_default(
+    struct cppbc__bad_cast *this_
+);
+
+struct cppbc__bad_cast*
+cppbc__bad_cast__new_default(void);
+
+void cppbc__bad_cast__destruct(
+    struct cppbc__bad_cast *this_
+);
+
+void cppbc__bad_cast__delete(
+    struct cppbc__bad_cast *this_
+);
+
+void cppbc__bad_cast__delete_c_array(
+    struct cppbc__bad_cast *c_array
+);
+
+const char* cppbc__bad_cast__what(
+    const struct cppbc__bad_cast *this_
+);
 
 /**
  * cppbc__type_info
